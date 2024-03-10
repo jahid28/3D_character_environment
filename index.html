@@ -27,11 +27,21 @@
       place-items: center;
     }
 
+    #transitionHelper{
+      width: 100vw;
+      height: 100vh;
+      background-color: #5e5791;
+      position: absolute;
+      top: 0;
+      z-index: 196;
+      transition: all linear .6s;
+    }
+
     #loadingCont {
       position: absolute;
       top: 0;
       display: grid;
-      transition: all ease-in 0.3s;
+      transition: all linear 0.3s;
       place-items: center;
       height: 100vh;
       width: 100vw;
@@ -169,7 +179,7 @@
 
     #infoCont {
       z-index: 197;
-      transition: all ease-in 0.3s;
+      transition: all linear 0.3s;
       position: absolute;
       top: 130vh;
       color: white;
@@ -354,6 +364,11 @@
     }
   </style>
   <body>
+
+    <div id="transitionHelper">
+
+    </div>
+
     <div id="loadingCont">
       <p id="bloom1"></p>
       <p id="bloom2"></p>
@@ -361,7 +376,7 @@
       <div id="info">
         <button id="enter">Enter</button>
         <p style="text-align: center">
-          Hop into this portfolio of a 3D realm of adventure, where you'll
+          Get ready to explore this 3D realm of adventure, where you'll
           uncover various interactive elements and information.
         </p>
         <br />
@@ -378,6 +393,8 @@
         <p>Click on the character to change the colors of the cloths</p>
         <br />
         <p>Objective : Summon the dragon (Hint : Look for the wizard)</p>
+        <br />
+        <p>About : This is a 3D portfolio made with the help of ThreeJS, where I tried to make interactive and interesting experience while you explore the world. Hope you will like it :)</p>
       </div>
     </div>
 
@@ -426,12 +443,12 @@
 
     <div class="msg" id="bookPillar_msg">
       <p class="msgP">
-        Want to see the magical book which contains all the information about
+        Want to see the magical book which contains information about
         the narrator?
       </p>
       <a
         class="msgBtn"
-        href="https://drive.google.com/file/d/1djKiznWWeP7J5fs4f71UtRTM5Ues_GRZ/view?usp=sharing"
+        href="https://drive.google.com/file/d/1TLLkkv0SKwL6sGTGbeMbkZeF3LMcPrIx/view?usp=sharing"
         target="_blank"
         id="bookPillarBtn"
         >See the book</a

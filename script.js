@@ -14,7 +14,7 @@ const camera = new THREE.PerspectiveCamera(
   0.001,
   1000000
 );
-camera.position.set(0, 6, 10);
+// camera.position.set(0, 6, 10);
 camera.rotateX(-0.4);
 
 // const orbit = new THREE.OrbitControls(camera, renderer.domElement);
@@ -851,6 +851,7 @@ let intersects;
 let board1Intersect;
 let board2Intersect;
 let board3Intersect;
+
 window.addEventListener("mousemove", function (e) {
   mousePosition.x = (e.clientX / window.innerWidth) * 2 - 1;
   mousePosition.y = -(e.clientY / window.innerHeight) * 2 + 1;
@@ -906,7 +907,7 @@ document.body.appendChild(labelRenderer.domElement);
 
 const p = document.createElement("p");
 p.id = "linkP";
-p.textContent = "Click the board to open";
+p.textContent = "Click the board to open the link";
 
 const p2 = document.createElement("p");
 p2.id = "mern";
@@ -975,7 +976,7 @@ const skillChestClock = new THREE.Clock();
 let vel = 0.02;
 let up = true;
 
-camera.position.set(0, 5, 25);
+camera.position.set(manBody.position.x, 5, manBody.position.z + 9);
 
 //copying physics properties to 3d objects
 
@@ -1271,9 +1272,9 @@ window.addEventListener("resize", function () {
 
 //all audio
 
-let audio = new Audio("/sounds/haloween.mp3");
-audio.loop = true;
-audio.volume = 0.2;
+let bg_music3 = new Audio("/sounds/bg_music3.mp3");
+bg_music3.loop = true;
+bg_music3.volume = 0.15;
 let welcomeAudio = new Audio("/sounds/welcome.wav");
 let keyAudio = new Audio("/sounds/keys.wav");
 let rockAudio = new Audio("/sounds/rock.mp3");
@@ -1358,12 +1359,17 @@ document
   });
 
 let enterBtn = document.getElementById("enter");
+
 enterBtn.addEventListener("click", function () {
   document.getElementById("loadingCont").style.top = "130vh";
+  document.getElementById("transitionHelper").style.top = "130vh";
+  // document.getElementById("transitionHelper").style.transition="all linear .6s";
+  document.getElementById("transitionHelper").style.transitionDelay = ".1s";
   setTimeout(() => {
     document.getElementById("loadingCont").style.display = "none";
   }, 1000);
   entered = true;
+  bg_music3.play();
 });
 
 enterBtn.addEventListener("mousemove", (e) => {
@@ -1386,13 +1392,13 @@ document.getElementById("vol").addEventListener("click", function () {
     document.getElementById("volon").style.display = "none";
     document.getElementById("voloff").style.display = "block";
     vol = false;
-    audio.pause();
+    bg_music3.pause();
     // welcomeAudio.pause()
   } else {
     document.getElementById("volon").style.display = "block";
     document.getElementById("voloff").style.display = "none";
     vol = true;
-    audio.play();
+    bg_music3.play();
     // welcomeAudio.play()
   }
 });
@@ -1402,14 +1408,22 @@ document.getElementById("infoBtn").addEventListener("click", function () {
     document.getElementById("infoon").style.display = "none";
     document.getElementById("infooff").style.display = "block";
     document.getElementById("infoCont").style.top = "0";
+    document.getElementById("infoCont").style.transitionDelay = ".4s";
+    document.getElementById("transitionHelper").style.top = "0vh";
+    document.getElementById("transitionHelper").style.transitionDelay = "0s";
+    // document.getElementById("transitionHelper").style.transition="all linear .1s";
     info = false;
-    entered=false
+    entered = false;
   } else {
     document.getElementById("infoon").style.display = "block";
     document.getElementById("infooff").style.display = "none";
     document.getElementById("infoCont").style.top = "130vh";
+    document.getElementById("infoCont").style.transitionDelay = "0s";
+    document.getElementById("transitionHelper").style.top = "130vh";
+    // document.getElementById("transitionHelper").style.transition="all linear .6s";
+    document.getElementById("transitionHelper").style.transitionDelay = ".2s";
     info = true;
-    entered=true
+    entered = true;
   }
 });
 
