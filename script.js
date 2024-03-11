@@ -28,14 +28,6 @@ spotLight.power = 3000;
 scene.add(spotLight);
 spotLight.distance = 40;
 spotLight.position.set(0, 20, 0);
-// const spotLightHelper = new THREE.SpotLightHelper(spotLight);
-// scene.add(spotLightHelper);
-spotLight.castShadow = true;
-spotLight.shadow.mapSize.width = 1024;
-spotLight.shadow.mapSize.height = 1024;
-
-// const axis = new THREE.AxesHelper(20);
-// scene.add(axis);
 
 const groundGeo = new THREE.PlaneGeometry(50, 50);
 const groundMat = new THREE.MeshStandardMaterial({
@@ -45,7 +37,7 @@ const groundMat = new THREE.MeshStandardMaterial({
   side: THREE.DoubleSide,
 });
 const groundMesh = new THREE.Mesh(groundGeo, groundMat);
-groundMesh.receiveShadow = true;
+// groundMesh.receiveShadow = true;
 scene.add(groundMesh);
 
 // mat for all
@@ -60,7 +52,7 @@ const diff = new THREE.MeshStandardMaterial({
   opacity: 0,
 });
 
-// adding 3d objects to add like static physical objects
+// adding 3d objects to act like static physical objects
 
 const leftB = new THREE.BoxGeometry(0.5, 3, 41);
 const leftBMesh = new THREE.Mesh(leftB, envMat);
@@ -297,11 +289,6 @@ scene.add(book_pillarMesh);
 // balllMesh.position.set(0,0.2,0)
 // scene.add(balllMesh);
 
-// const box = new THREE.BoxGeometry(0.6, 2, 0.4);
-// const boxMesh = new THREE.Mesh(box, diff);
-// // boxMesh.position.set(0,1,0)
-// scene.add(boxMesh);
-
 const cylinder = new THREE.CylinderGeometry(0.4, 0.4, 1.6, 30);
 const cylinderMesh = new THREE.Mesh(cylinder, diff);
 scene.add(cylinderMesh);
@@ -387,7 +374,7 @@ loader.load("./models/env2.glb", function (gltf) {
   scene.add(model);
   model.scale.set(1, 1, 1);
   model.position.set(0, 0, 0);
-  model.receiveShadow = true;
+  // model.receiveShadow = true;
 });
 
 let portalAnime;
@@ -1310,53 +1297,92 @@ window.addEventListener("keyup", (e) => {
   }
 });
 
+//for touch screen
+
 if ("ontouchstart" in window) {
-  // Touch screen device detected
-  // console.log("Touch screen device detected.");
-  document.getElementById("phoneControls").style.display = "grid";
-}
+  vel=0.03
+  // let joyContH=window.innerHeight*(80/100)
+  // let joyH=window.innerHeight*(84.2/100)
+  document.getElementById("joystick-container").style.display = "block";
+  // document.getElementById("joystick-container").style.top = `${joyContH}px`;
+  document.getElementById("joystick").style.display = "block";
+  // document.getElementById("joystick").style.top = `${joyH}px`;
 
-document
-  .getElementById("controlUp")
-  .addEventListener("touchstart", function () {
-    w = true;
-  });
-document.getElementById("controlUp").addEventListener("touchend", function () {
-  w = false;
-});
+  // const joystickContainer = document.getElementById("joystick-container");
+  const joystick = document.getElementById("joystick");
+  const rect = joystick.getBoundingClientRect();
+  const left = rect.left;
+  const top = rect.top;
+  
+  window.addEventListener("touchmove", (e) => {
+    joystick.style.left = e.touches[0].clientX + "px";
+    joystick.style.top = e.touches[0].clientY + "px";
 
-document
-  .getElementById("controlLeft")
-  .addEventListener("touchstart", function () {
-    a = true;
+    const adjustedX = e.touches[0].clientX - left; // Adjusted x-coordinate
+    const adjustedY = e.touches[0].clientY - top; // Adjusted y-coordinate
+
+    const angle = Math.atan2(adjustedY, adjustedX);
+
+    let degrees = angle * (180 / Math.PI);
+    if (degrees < 0) {
+      degrees += 360; 
+    }
+    let val = Math.floor((degrees + 22.5) / 45) % 8;
+
+    if (val == 0) {
+      w = false;
+      a = false;
+      s = false;
+      d = true;
+    } else if (val == 1) {
+      w = false;
+      a = false;
+      s = true;
+      d = true;
+    } else if (val == 2) {
+      w = false;
+      a = false;
+      s = true;
+      d = false;
+    } else if (val == 3) {
+      w = false;
+      a = true;
+      s = true;
+      d = false;
+    } else if (val == 4) {
+      w = false;
+      a = true;
+      s = false;
+      d = false;
+    } else if (val == 5) {
+      w = true;
+      a = true;
+      s = false;
+      d = false;
+    } else if (val == 6) {
+      w = true;
+      a = false;
+      s = false;
+      d = false;
+    } else if (val == 7) {
+      w = true;
+      a = false;
+      s = false;
+      d = true;
+    }
   });
-document
-  .getElementById("controlLeft")
-  .addEventListener("touchend", function () {
+
+  window.addEventListener("touchend", () => {
+    w = false;
     a = false;
-  });
-
-document
-  .getElementById("controlDown")
-  .addEventListener("touchstart", function () {
-    s = true;
-  });
-document
-  .getElementById("controlDown")
-  .addEventListener("touchend", function () {
     s = false;
-  });
-
-document
-  .getElementById("controlRight")
-  .addEventListener("touchstart", function () {
-    d = true;
-  });
-document
-  .getElementById("controlRight")
-  .addEventListener("touchend", function () {
     d = false;
+    joystick.style.left = "50%";
+    joystick.style.top = "auto";
+    joystick.style.bottom = "100px";
+    // joystick.style.top = `${joyH}px`;
   });
+}
 
 let enterBtn = document.getElementById("enter");
 

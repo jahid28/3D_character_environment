@@ -27,14 +27,14 @@
       place-items: center;
     }
 
-    #transitionHelper{
+    #transitionHelper {
       width: 100vw;
       height: 100vh;
       background-color: #5e5791;
       position: absolute;
       top: 0;
       z-index: 196;
-      transition: all linear .6s;
+      transition: all linear 0.6s;
     }
 
     #loadingCont {
@@ -176,7 +176,6 @@
       color: white;
     }
 
-
     #infoCont {
       z-index: 197;
       transition: all linear 0.3s;
@@ -302,7 +301,7 @@
     #infooff {
       display: none;
     }
-    
+
     .fa-solid {
       transition: all linear 0.2s;
     }
@@ -310,23 +309,32 @@
       color: #8d8d8d;
     }
 
-    #phoneControls {
+
+    #joystick-container {
       display: none;
-      place-items: center;
+      /* place-items: center; */
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-color: rgba(91, 91, 91, 0.73);
       position: absolute;
-      bottom: 50px;
-      color: white;
-      font-size: 5rem;
-    }
-
-    #phoneControls div {
-      display: flex;
-    }
-
-    #phoneControls i {
-      margin: 20px;
+      bottom: 100px;
     }
     
+    #joystick {
+      display: none;
+      position: absolute;
+      top: auto;
+      left: 50%;
+      bottom: 100px;
+      transform: translate(-50%, -50%); 
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgb(255, 255, 255);
+    }
+
+
     #linkP {
       /* transform: rotateZ(30deg); */
       color: rgb(254, 212, 127);
@@ -364,10 +372,7 @@
     }
   </style>
   <body>
-
-    <div id="transitionHelper">
-
-    </div>
+    <div id="transitionHelper"></div>
 
     <div id="loadingCont">
       <p id="bloom1"></p>
@@ -376,8 +381,8 @@
       <div id="info">
         <button id="enter">Enter</button>
         <p style="text-align: center">
-          Get ready to explore this 3D realm of adventure, where you'll
-          uncover various interactive elements and information.
+          Get ready to explore this 3D realm of adventure, where you'll uncover
+          various interactive elements and information.
         </p>
         <br />
         <p>Controls : W-A-S-D or Arrow keys</p>
@@ -394,7 +399,11 @@
         <br />
         <p>Objective : Summon the dragon (Hint : Look for the wizard)</p>
         <br />
-        <p>About : This is a 3D portfolio made with the help of ThreeJS, where I tried to make interactive and interesting experience while you explore the world. Hope you will like it :)</p>
+        <p>
+          About : This is a 3D portfolio made with the help of ThreeJS, where I
+          tried to make interactive and interesting experience while you explore
+          the world. Hope you will like it :)
+        </p>
       </div>
     </div>
 
@@ -443,8 +452,8 @@
 
     <div class="msg" id="bookPillar_msg">
       <p class="msgP">
-        Want to see the magical book which contains information about
-        the narrator?
+        Want to see the magical book which contains information about the
+        narrator?
       </p>
       <a
         class="msgBtn"
@@ -483,7 +492,6 @@
       >
     </div>
 
-    
     <div id="ele">
       <div id="vol">
         <i id="volon" class="fa-solid fa-volume-high"></i>
@@ -497,15 +505,11 @@
     </div>
 
    
-
-    <div id="phoneControls">
-      <i id="controlUp" class="fa-solid fa-circle-arrow-up"></i>
-      <div>
-        <i id="controlLeft" class="fa-solid fa-circle-arrow-left"></i>
-        <i id="controlDown" class="fa-solid fa-circle-arrow-down"></i>
-        <i id="controlRight" class="fa-solid fa-circle-arrow-right"></i>
-      </div>
+    <div id="joystick-container">
     </div>
+    <div id="joystick"></div>
+   
+
 
     <div id="canvas"></div>
   </body>
