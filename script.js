@@ -367,6 +367,8 @@ loader.load("./models/character4.glb", function (gltf) {
   action = mixer.clipAction(clip);
 
   action2 = mixer2.clipAction(clip2);
+  // action.play()
+  // action2.play()
 });
 
 loader.load("./models/env2.glb", function (gltf) {
@@ -1021,6 +1023,19 @@ skillChestBody.position.copy(skillChestMesh.position);
 skillChestBody.quaternion.copy(skillChestMesh.quaternion);
 book_pillarBody.position.copy(book_pillarMesh.position);
 
+// const tl = gsap.timeline();
+
+// function transitionAnimation(targetAnimation) {
+//   const currentAnimation = mixer._actions.find(action => action.isRunning());
+//   // console.log("cuu an is ",currentAnimation)
+//   if (currentAnimation !== targetAnimation) {
+//       if (currentAnimation) {
+//           currentAnimation.fadeOut(0.5); // Fade out the current animation
+//       }
+//       targetAnimation.reset().fadeIn(0.5).play(); // Fade in and play the target animation
+//   }
+// }
+
 function animate() {
   if (w || a || s || d) {
     camera.position.set(manBody.position.x, 5, manBody.position.z + 9);
@@ -1048,15 +1063,26 @@ function animate() {
     skillChestAction.play();
   }
 
+  // if(mixer){
+  //   mixer.update(clock.getDelta())
+  // }
+
   if (mixer && (w || a || s || d)) {
     mixer.update(clock.getDelta());
-    action.play();
+    // transitionAnimation(action)
+    // action.fadeIn(.5).play();
+    // action2.fadeOut(.5).stop();
     action2.stop();
+    action.play();
   }
+
   if (mixer2 && !w && !a && !s && !d) {
     mixer2.update(clock2.getDelta());
-    action.stop();
+    // transitionAnimation(action2)
+    // action2.fadeIn(.5).play();
+    // action.fadeOut(.5).stop();
     action2.play();
+    action.stop();
   }
 
   cylinderMesh.position.copy(manBody.position);
@@ -1071,8 +1097,22 @@ function animate() {
     man.position.x = manBody.position.x;
     man.position.y = manBody.position.y - 0.8;
     man.position.z = manBody.position.z;
-    // man.quaternion.copy(manBody.quaternion);
 
+    // Define rotation values on the circle
+    // const rotationValues = [0, 0.8, 1.6, 2.4, 3.2, 4, 4.8, 5.6];
+
+    // Calculate the closest rotation value
+    // let currentRotation = (man.rotation.y + 2 * Math.PI) % (2 * Math.PI); // Normalize rotation to [0, 2 * PI]
+    // let closestRotation = rotationValues.reduce((prev, curr) => {
+    //     let d1 = Math.abs(curr - currentRotation);
+    //     let d2 = Math.abs(curr - (currentRotation + 2 * Math.PI)); // Add 2 * PI to currentRotation to ensure correct comparison
+    //     let d3 = Math.abs(curr - (currentRotation - 2 * Math.PI)); // Subtract 2 * PI to currentRotation to ensure correct comparison
+    //     return Math.min(d1, d2, d3) === d1 ? curr : Math.min(d2, d3) === d2 ? curr + 2 * Math.PI : curr - 2 * Math.PI;
+    // });
+
+    // let targetRotation = man.rotation.y;
+
+    // Handle movement and update targetRotation
     if (w && d && !a && !s) {
       manBody.position.z -= vel;
       manBody.position.x += vel;
@@ -1102,6 +1142,8 @@ function animate() {
       manBody.position.x += vel;
       man.rotation.y = 1.6;
     }
+
+    // gsap.to(man.rotation, { y: targetRotation });
   }
 
   if (
@@ -1110,45 +1152,48 @@ function animate() {
     -13 > manBody.position.z &&
     manBody.position.z > -17
   ) {
-    portal_div = true;
+    document.getElementById("portal_msg").style.display = "grid";
   } else {
-    portal_div = false;
+    document.getElementById("portal_msg").style.display = "none";
   }
 
   if (
     -17.5 > manBody.position.x &&
     manBody.position.x > -22 &&
     -11 > manBody.position.z &&
-    manBody.position.z > -15
+    manBody.position.z > -15 &&
+    !key
   ) {
     // console.log("wiz");
-    wiz_div = true;
+    document.getElementById("wiz_msg").style.display = "grid";
   } else {
-    wiz_div = false;
+    document.getElementById("wiz_msg").style.display = "none";
   }
 
   if (
     -6 > manBody.position.x &&
     manBody.position.x > -10 &&
     0 > manBody.position.z &&
-    manBody.position.z > -4
+    manBody.position.z > -4 &&
+    !summoned
   ) {
     // console.log("statue");
-    statue_div = true;
+    document.getElementById("statue_msg").style.display = "grid";
   } else {
-    statue_div = false;
+    document.getElementById("statue_msg").style.display = "none";
   }
 
   if (
     4 > manBody.position.x &&
     manBody.position.x > 1 &&
     8 > manBody.position.z &&
-    manBody.position.z > 5
+    manBody.position.z > 5 &&
+    !chestOpen
   ) {
     // console.log("skillChest");
-    skillChest_div = true;
+    document.getElementById("skillChest_msg").style.display = "grid";
   } else {
-    skillChest_div = false;
+    document.getElementById("skillChest_msg").style.display = "none";
   }
 
   if (
@@ -1157,10 +1202,9 @@ function animate() {
     4 > manBody.position.z &&
     manBody.position.z > 2
   ) {
-    // console.log("bookPillar_msg");
-    bookPillar_msg = true;
+    document.getElementById("bookPillar_msg").style.display = "grid";
   } else {
-    bookPillar_msg = false;
+    document.getElementById("bookPillar_msg").style.display = "none";
   }
 
   if (
@@ -1170,9 +1214,9 @@ function animate() {
     manBody.position.z > -2.1
   ) {
     // console.log("ecom");
-    ecom_msg = true;
+    document.getElementById("ecom_msg").style.display = "grid";
   } else {
-    ecom_msg = false;
+    document.getElementById("ecom_msg").style.display = "none";
   }
 
   if (
@@ -1181,9 +1225,9 @@ function animate() {
     -0.6 > manBody.position.z &&
     manBody.position.z > -2.1
   ) {
-    ohub_msg = true;
+    document.getElementById("ohub_msg").style.display = "grid";
   } else {
-    ohub_msg = false;
+    document.getElementById("ohub_msg").style.display = "none";
   }
   if (
     10.2 > manBody.position.x &&
@@ -1191,55 +1235,55 @@ function animate() {
     -0.6 > manBody.position.z &&
     manBody.position.z > -2.1
   ) {
-    chess_msg = true;
-  } else {
-    chess_msg = false;
-  }
-
-  if (wiz_div && !key) {
-    document.getElementById("wiz_msg").style.display = "grid";
-  } else {
-    document.getElementById("wiz_msg").style.display = "none";
-  }
-
-  if (portal_div) {
-    document.getElementById("portal_msg").style.display = "grid";
-  } else {
-    document.getElementById("portal_msg").style.display = "none";
-  }
-
-  if (statue_div && !summoned) {
-    document.getElementById("statue_msg").style.display = "grid";
-  } else {
-    document.getElementById("statue_msg").style.display = "none";
-  }
-
-  if (skillChest_div && !chestOpen) {
-    document.getElementById("skillChest_msg").style.display = "grid";
-  } else {
-    document.getElementById("skillChest_msg").style.display = "none";
-  }
-
-  if (bookPillar_msg) {
-    document.getElementById("bookPillar_msg").style.display = "grid";
-  } else {
-    document.getElementById("bookPillar_msg").style.display = "none";
-  }
-  if (ecom_msg) {
-    document.getElementById("ecom_msg").style.display = "grid";
-  } else {
-    document.getElementById("ecom_msg").style.display = "none";
-  }
-  if (ohub_msg) {
-    document.getElementById("ohub_msg").style.display = "grid";
-  } else {
-    document.getElementById("ohub_msg").style.display = "none";
-  }
-  if (chess_msg) {
     document.getElementById("chess_msg").style.display = "grid";
   } else {
     document.getElementById("chess_msg").style.display = "none";
   }
+
+  // if (wiz_div && !key) {
+  //   document.getElementById("wiz_msg").style.display = "grid";
+  // } else {
+  //   document.getElementById("wiz_msg").style.display = "none";
+  // }
+
+  // if (portal_div) {
+  //   document.getElementById("portal_msg").style.display = "grid";
+  // } else {
+  //   document.getElementById("portal_msg").style.display = "none";
+  // }
+
+  // if (statue_div && !summoned) {
+  //   document.getElementById("statue_msg").style.display = "grid";
+  // } else {
+  //   document.getElementById("statue_msg").style.display = "none";
+  // }
+
+  // if (skillChest_div && !chestOpen) {
+  //   document.getElementById("skillChest_msg").style.display = "grid";
+  // } else {
+  //   document.getElementById("skillChest_msg").style.display = "none";
+  // }
+
+  // if (bookPillar_msg) {
+  //   document.getElementById("bookPillar_msg").style.display = "grid";
+  // } else {
+  //   document.getElementById("bookPillar_msg").style.display = "none";
+  // }
+  // if (ecom_msg) {
+  //   document.getElementById("ecom_msg").style.display = "grid";
+  // } else {
+  //   document.getElementById("ecom_msg").style.display = "none";
+  // }
+  // if (ohub_msg) {
+  //   document.getElementById("ohub_msg").style.display = "grid";
+  // } else {
+  //   document.getElementById("ohub_msg").style.display = "none";
+  // }
+  // if (chess_msg) {
+  //   document.getElementById("chess_msg").style.display = "grid";
+  // } else {
+  //   document.getElementById("chess_msg").style.display = "none";
+  // }
 
   world.step(timeStep);
   labelRenderer.render(scene, camera);
@@ -1300,7 +1344,7 @@ window.addEventListener("keyup", (e) => {
 //for touch screen
 
 if ("ontouchstart" in window) {
-  vel=0.03
+  vel = 0.03;
   // let joyContH=window.innerHeight*(80/100)
   // let joyH=window.innerHeight*(84.2/100)
   document.getElementById("joystick-container").style.display = "block";
@@ -1313,7 +1357,7 @@ if ("ontouchstart" in window) {
   const rect = joystick.getBoundingClientRect();
   const left = rect.left;
   const top = rect.top;
-  
+
   window.addEventListener("touchmove", (e) => {
     joystick.style.left = e.touches[0].clientX + "px";
     joystick.style.top = e.touches[0].clientY + "px";
@@ -1325,7 +1369,7 @@ if ("ontouchstart" in window) {
 
     let degrees = angle * (180 / Math.PI);
     if (degrees < 0) {
-      degrees += 360; 
+      degrees += 360;
     }
     let val = Math.floor((degrees + 22.5) / 45) % 8;
 
